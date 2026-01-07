@@ -1,0 +1,12 @@
+{
+  "start": "2025-01-01",
+  "market": "US",
+
+  "channels": [
+    { "name": "MTS",
+      "strategies": "https://drive.google.com/uc?export=download&id=1OQbKAHcjzcWTttUAHLMFCn_gBy1fZmxJ",
+      "chat_id": "CHAT_ID_MTS",
+      "token": "TOKEN_MTS"
+    }
+  ]
+}
