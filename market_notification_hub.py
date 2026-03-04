@@ -13,7 +13,8 @@ def main(channel):
     # import strategies from strategies.csv
     strategies = Strategies().import_strategies(channel["strategies"])
     tickers    = list(strategies.keys())
-    
+    notifier   = Notifier()
+
     # import standard indicators for signal confirmation
     confirmations = loader.load_confirmations()
 
@@ -79,12 +80,8 @@ def main(channel):
         report.append(msg)
 
         # notifies via Telegram
-        token    = os.getenv(channel["token"])
-        chat_id  = os.getenv(channel["chat_id"])
-        notifier = Notifier(token=token, chat_id=chat_id)
         try:
-            payload = {"chat_id": notifier.CHAT_ID, "text": msg, "parse_mode": "HTML", "disable_web_page_preview": True}
-            msg_id  = notifier.send_telegram(payload)
+            msg_id = notifier.send_telegram(msg)
             messages[a["Ticker"]] = msg_id
         except Exception as err:
             print("Telegram error:", err)
@@ -96,11 +93,13 @@ def main(channel):
             link = f"https://t.me/{notifier.CHAT_ID.lstrip('@')}/{msg_id}"
             summary.append(f'<a href="{link}">{ticker}</a>')
         msg   =  " ○ ".join(summary)
-        payload = {"chat_id": notifier.CHAT_ID, "text": f"<b>Summary:</b>\n{msg}", "parse_mode": "HTML", "disable_web_page_preview": True}
-        notifier.send_telegram(payload)
+        notifier.send_telegram(msg)
     
     except Exception as err:
         print("Telegram error:", err)
+        
+    # report in E-mail
+    notifier.send_email(subject="Market Notification Hub - Report", body="\n\n".join(report))
 
 
 if __name__ == "__main__":
