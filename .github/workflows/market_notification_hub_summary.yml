@@ -1,8 +1,8 @@
-name: Market Notification Hub
+name: Market Notification Hub Summary
 
 on:
   schedule:
-    - cron: "15 21 * * 1-5" # runs at 21:15 UTC, Monday-Friday
+    - cron: "15 22 * * 1,3,5" 
   workflow_dispatch: # runs manualy if desired
 
 jobs:
@@ -28,5 +28,5 @@ jobs:
         run: |
           for i in {1..3}; do
           echo "Attempt $i of 3."
-            python market_notification_hub.py && break || echo "Attempt $i has failed. Retrying in 30 seconds." && sleep 30
+            python market_notification_hub.py --mode summary && break || echo "Attempt $i has failed. Retrying in 30 seconds." && sleep 30
           done

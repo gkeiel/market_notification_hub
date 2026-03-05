@@ -1,0 +1,32 @@
+name: Market Notification Hub Signals
+
+on:
+  schedule:
+    - cron: "15 21 * * 1-5" 
+  workflow_dispatch: # runs manualy if desired
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Run script
+        env:
+          TOKEN_MTS: ${{ secrets.TOKEN_MTS }}
+          CHAT_ID_MTS: ${{ secrets.CHAT_ID_MTS }}
+        run: |
+          for i in {1..3}; do
+          echo "Attempt $i of 3."
+            python market_notification_hub.py --mode signals && break || echo "Attempt $i has failed. Retrying in 30 seconds." && sleep 30
+          done

@@ -1,4 +1,4 @@
-import os
+import os, argparse
 from core.loader import Loader
 from core.indicator import Indicator
 from core.backtester import Backtester
@@ -8,8 +8,31 @@ from dotenv import load_dotenv
 load_dotenv()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-  
-def main(channel):
+
+def main(channel, mode):
+    # run for selected mode
+    if mode == "signals":
+        run_signals(channel)
+    elif mode == "alerts":
+        run_alerts(channel)
+    elif mode == "summary":
+        run_summary(channel)
+    else:
+        raise ValueError("Invalid mode.")
+
+def run_alerts(channel):
+    notifier = Notifier()
+    msg      = ("Stay disciplined. The market rewards patience.\n")
+    notifier.send_telegram(msg)
+    
+def run_summary(channel):
+    notifier = Notifier()
+    msg      = ("<b>Check our other channels:</b>\n"
+                "t.me/b3_trading_signals_free\n"
+                "t.me/market_forecaster_public\n")
+    notifier.send_telegram(msg)
+
+def run_signals(channel):
     # import strategies from strategies.csv
     strategies = Strategies().import_strategies(channel["strategies"])
     tickers    = list(strategies.keys())
@@ -92,17 +115,21 @@ def main(channel):
         for ticker, msg_id in messages.items():
             link = f"https://t.me/{notifier.CHAT_ID.lstrip('@')}/{msg_id}"
             summary.append(f'<a href="{link}">{ticker}</a>')
-        msg   =  " ○ ".join(summary)
+        msg = "<b>Summary:</b>\n" +" ○ ".join(summary)
         notifier.send_telegram(msg)
     
     except Exception as err:
         print("Telegram error:", err)
         
     # report in E-mail
-    notifier.send_email(subject="Market Notification Hub - Report", body="\n\n".join(report))
+    notifier.send_email(subject="Market Notification Hub - Daily Report", body="\n\n".join(report))
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", default="signals")
+    args   = parser.parse_args()
+    
     loader = Loader("config/channels.json")
     
     for channel in loader.channels:
@@ -110,8 +137,8 @@ if __name__ == "__main__":
         
         for attempt in range(max_attempt):
             try:
-                print(f"Channel: {channel['name']}.")
-                main(channel)
+                print(f"Channel {channel['name']}")
+                main(channel, args.mode)
                 break
             except Exception as err:
                 print(f"Error on attempt {attempt}: {err}.")

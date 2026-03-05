@@ -21,7 +21,7 @@ class Notifier:
         self.SMTP_PORT   = 587
 
     def send_telegram(self, msg):
-        payload = {"chat_id": self.CHAT_ID, "text": f"<b>Summary:</b>\n{msg}", "parse_mode": "HTML", "disable_web_page_preview": True}
+        payload = {"chat_id": self.CHAT_ID, "text":msg, "parse_mode": "HTML", "disable_web_page_preview": True}
         url = f"https://api.telegram.org/bot{self.TOKEN}/sendMessage"
         r = requests.post(url, json=payload, timeout=10)
         r.raise_for_status()
