@@ -10,8 +10,8 @@ class Notifier:
     def __init__(self):
         load_dotenv()
         # Telegram bot TOKEN and channel ID
-        self.TOKEN    = os.getenv("TOKEN")      # bot TOKEN
-        self.CHAT_ID  = os.getenv("CHAT_ID")    # channel ID
+        self.TOKEN    = os.getenv("TOKEN_MTS")      # bot TOKEN
+        self.CHAT_ID  = os.getenv("CHAT_ID_MTS")    # channel ID
         
         # E-mail
         self.EMAIL_FROM  = os.getenv('EMAIL_FROM')
