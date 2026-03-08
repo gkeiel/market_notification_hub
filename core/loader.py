@@ -65,10 +65,13 @@ class Loader:
             return f"{ticker}.SA"
         return ticker
 
-    def download_data(self, ticker):
+    def download_data(self, ticker, interval="15m", period=None):
         # collect OHLCVDS data from Yahoo Finance
         try:
-            df = yf.download(self.format_ticker(ticker), self.start, self.end, auto_adjust=True)
+            if period:
+                df = yf.download(self.format_ticker(ticker), interval=interval, period=period, auto_adjust=True)
+            else:
+                df = yf.download(self.format_ticker(ticker), self.start, self.end, auto_adjust=True)
         except Exception as err:
             raise RuntimeError("Unexpected error in download_data.") from err
         
