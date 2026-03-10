@@ -39,14 +39,14 @@ def run_alerts(channel):
     volume_move = sorted(volume_move, key=lambda x: x[1], reverse=True)[:3]
     
     if price_move or volume_move:
-        msg = "<b>Price Movers:<\b>\n"
+        msg = "<b>Price Movers:</b>\n"
         for ticker, change in price_move:
             msg += f"#{ticker} {change:+.1f}%\n"
-        msg += "\n<b>Volume Leaders:<\b>\n"
+        msg += "\n<b>Volume Leaders:</b>\n"
         for ticker, vol in volume_move:
-            msg += f"#{ticker} {vol:.1f}x\n"
-    #else:
-        #msg = ("Stay disciplined. The market rewards patience.\n")
+            msg += f"#{ticker} {vol:.1f}\n"
+    else:
+        msg = ("Stay disciplined. The market rewards patience.\n")
     notifier.send_telegram(msg)
 
 def run_info(channel):
