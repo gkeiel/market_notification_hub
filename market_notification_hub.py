@@ -59,6 +59,9 @@ def run_info(channel):
 
     "Trading Tip:\n"
     "Strong trends often begin with volume expansion.",
+    
+    "Trading Tip:\n"
+    "Patience is a trading skill. Not every market movement is an opportunity.",
 
     "Discipline Tip:\n"
     "Consistent traders follow their plan even after a losing trade.",
@@ -67,7 +70,10 @@ def run_info(channel):
     "Large price moves with low volume often lack follow-through.",
     
     "Market Insight:\n"
-    "Volatility often increases near major support and resistance levels."
+    "Consolidation periods often precede significant price movements.",
+    
+    "Risk Reminder:\n"
+    "Position sizing is just as important as choosing the right entry.",
     
     "Risk Reminder:\n"
     "Protecting capital is more important than chasing profits."

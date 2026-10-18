@@ -2,7 +2,8 @@ name: Market Notification Hub Alerts
 
 on:
   schedule:
-    - cron: "15 17 * * 1-5"
+    - cron: "00 15 * * 1-5"
+    - cron: "00 21 * * 1-6"
   workflow_dispatch: # runs manualy if desired
 
 jobs:
